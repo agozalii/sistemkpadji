@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePromosiRequest;
 use App\Http\Requests\UpdatepromosiRequest;
+use App\Models\DetailPromosiModel;
+use App\Models\ProdukModel;
 use App\Models\PromosiModel;
+use Database\Factories\ProdukModelFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,28 +18,26 @@ class PromosiController extends Controller
      */
     public function index()
     {
-        $data = PromosiModel::all(); // Mengambil semua data dari tabel promosi
-        return view("admin.promosi", compact('data'))->with([
+        $data = PromosiModel::all();  // Mengambil semua data dari tabel promosi
+        return view('admin.promosi', compact('data'))->with([
             'user' => Auth::user()
         ]);
     }
 
     public function addPromosi()
     {
-        return view("admin.modal.addPromosi", [
+        $produks = ProdukModel::all();
+        return view('admin.modal.addPromosi', [
             'title' => 'Tambah  Promosi',
+            'produks' => $produks,
             'id' => 'PS' . rand(100, 999),
         ]);
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -58,8 +59,19 @@ class PromosiController extends Controller
             $data->gambar_promosi = $filename;
         }
 
-        $data->save();
-        return redirect('/promosi');
+        if ($data->save()) {
+            foreach ($request->produks as $key => $value) {
+                $produk = ProdukModel::findOrFail($value);
+
+                $detail = new DetailPromosiModel();
+                $detail->id_produk = $value;
+                $detail->id_promosi = $request->id;
+                $detail->nama_produk = $produk->nama_produk;
+                $detail->save();
+            }
+
+            return redirect('/promosi');
+        }
     }
 
     /**
@@ -67,13 +79,22 @@ class PromosiController extends Controller
      */
     public function show(string $id)
     {
-        $data = PromosiModel::findOrFail($id);
+        $data = PromosiModel::query()
+        ->where('promosi.id', $id)
+        ->first();
+        $details = DetailPromosiModel::query()
+        ->where('detail_promosi.id_promosi', $id)
+        ->get();
+
+        $produks = ProdukModel::all();
 
         return view(
             'admin.modal.EditPromosi',
             [
                 'title' => 'Edit Data Promosi',
                 'data' => $data,
+                'details' => $details,
+                'produks' => $produks
             ]
         )->render();
     }
@@ -102,18 +123,29 @@ class PromosiController extends Controller
             $filename = $request->gambar_promosi;
         }
 
-        $field = [
-            'id' => $request->id,
-            'gambar_promosi' => $filename,
-            'nama_promosi' => $request->nama_promosi,
-            'deskripsi_promosi' => $request->deskripsi_promosi,
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_selesai' => $request->tanggal_selesai,
+        $data->gambar_promosi = $filename;
+        $data->nama_promosi = $request->nama_promosi;
+        $data->deskripsi_promosi = $request->deskripsi_promosi;
+        $data->tanggal_mulai = $request->tanggal_mulai;
+        $data->tanggal_selesai = $request->tanggal_selesai;
 
-        ];
-        $data::where('id', $id)->update($field);
-        // Alert :: toast('Data Berhasil Diedit', 'success');
-        return redirect('/promosi');
+        if ($data->save()) {
+        
+            foreach ($request->produks as $key => $value) {
+                $produk = ProdukModel::findOrFail($value);
+
+                $already = DetailPromosiModel::where('id_promosi', $data->id)->where('id_produk', $value)->first();
+                if(!$already){
+                    $detail = new DetailPromosiModel();
+                    $detail->id_produk = $value;
+                    $detail->id_promosi = $data->id;
+                    $detail->nama_produk = $produk->nama_produk;
+                    $detail->save();
+                }
+                
+            }
+            return redirect('/promosi');
+        }
     }
 
     /**
@@ -125,6 +157,16 @@ class PromosiController extends Controller
         $data->delete();
         // Alert :: toast('Data Berhasil Dihapus', 'success');
         //  return redirect('/produk');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Berhasil Menghapus Data',
+        ]);
+    }
+
+    public function destroyProduk(Request $request){
+        $id = $request->input('id');
+        $data = DetailPromosiModel::find($id);
+        $data->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'Berhasil Menghapus Data',

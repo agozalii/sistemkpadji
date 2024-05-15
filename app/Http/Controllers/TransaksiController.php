@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailPromosiModel;
 use App\Models\DetailTransaksiModels;
 use App\Models\ProdukModel;
 use App\Models\PromosiModel;
 use App\Models\TransaksiModels;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Validator;
 
 class TransaksiController extends Controller
 {
@@ -24,22 +24,40 @@ class TransaksiController extends Controller
 
         $data = TransaksiModels::query();
 
-        if($search) {
-            $data = $data->where('id', 'like', '%' . $search . '%')
-            ->orWhere('nama_pelanggan', 'like', '%' . $search . '%')
-            ->orWhere('metode_pembayaran', 'like', '%' . $search . '%')
-            ->orWhere('tanggal_transaksi', 'like', '%' . $search . '%')
-            ->orWhere('total_transaksi', 'like', '%' . $search . '%');
+        if ($search) {
+            $data = $data
+                ->where('id', 'like', '%' . $search . '%')
+                ->orWhere('nama_pelanggan', 'like', '%' . $search . '%')
+                ->orWhere('metode_pembayaran', 'like', '%' . $search . '%')
+                ->orWhere('tanggal_transaksi', 'like', '%' . $search . '%')
+                ->orWhere('total_transaksi', 'like', '%' . $search . '%');
         }
 
-        $data = $data->orderBy('id', 'desc')
-        ->paginate(10);
-
+        $data = $data
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
         return view('admin.transaksi', compact('data'))->with([
             'user' => Auth::user(),
             'search' => $search
         ]);
+    }
+
+    public function getProdukPromosi(Request $request)
+    {
+        $id = $request->input('produkId');
+        $data = DetailPromosiModel::query()->where('id_produk', $id)->orderBy('created_at', 'desc')->first();
+        if ($data) {
+            return response()->json([
+                'status' => 'success',
+                'data' => $data->id_promosi,
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'data' => null
+            ]);
+        }
     }
 
     public function addTransaksi()
@@ -65,7 +83,6 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-
         try {
             // Validasi data yang diterima
 
@@ -77,15 +94,14 @@ class TransaksiController extends Controller
                 'jumlah_beli_produk' => 'required',
             ]);
 
-
             if ($validasi->fails()) {
                 $errors = $validasi->errors()->all();
                 return back()->withErrors($errors)->withInput();
             }
             // dd($request->all());
 
-            //buat nomor order
-            $no_order = 'NT-'.date('Ymd') . '-' . rand(100, 999);
+            // buat nomor order
+            $no_order = 'NT-' . date('Ymd') . '-' . rand(100, 999);
 
             // Simpan data transaksi ke dalam tabel transaksi
             $transaksi = new TransaksiModels();
@@ -99,9 +115,8 @@ class TransaksiController extends Controller
             if ($transaksi->save()) {
                 // Simpan data detail transaksi ke dalam tabel detail_transaksi
 
-                $total_harga = 0; //inisialisasi total_harga
+                $total_harga = 0;  // inisialisasi total_harga
                 foreach ($request->produk_id as $key => $value) {
-
                     $produk = ProdukModel::query()->where('id', $value)->first();
                     $total_harga += $produk->harga_produk * $request->jumlah_beli_produk[$key];
 
@@ -115,17 +130,15 @@ class TransaksiController extends Controller
                         $detailTransaksi->promosi_id = $request->promosi_id[$key];
                         $detailTransaksi->jumlah_beli_produk = $request->jumlah_beli_produk[$key];
                         $detailTransaksi->save();
-                    }else{
+                    } else {
                         $haveTransaksi->jumlah_beli_produk = $haveTransaksi->jumlah_beli_produk + $request->jumlah_beli_produk[$key];
                         $haveTransaksi->save();
                     }
-
                 }
 
                 $transaksis = TransaksiModels::query()->where('id', $no_order)->first();
                 $transaksis->total_transaksi = $total_harga;
                 $transaksis->save();
-
             }
 
             // Respon sukses
@@ -162,15 +175,15 @@ class TransaksiController extends Controller
      */
     public function view(string $id)
     {
-       $transaksi = TransaksiModels::query()->where('id', $id)->first();
-       $detail = DetailTransaksiModels::query()->where('transaksi_id', $id)->get();
+        $transaksi = TransaksiModels::query()->where('id', $id)->first();
+        $detail = DetailTransaksiModels::query()->where('transaksi_id', $id)->get();
 
-       return view('admin.view-transaksi', [
-           'title' => 'View Transaksi',
-           'transaksi' => $transaksi,
-           'detail' => $detail,
-           'user' => Auth::user(),
-       ]);
+        return view('admin.view-transaksi', [
+            'title' => 'View Transaksi',
+            'transaksi' => $transaksi,
+            'detail' => $detail,
+            'user' => Auth::user(),
+        ]);
     }
 
     /**
@@ -189,7 +202,6 @@ class TransaksiController extends Controller
                 'jumlah_beli_produk' => 'required',
             ]);
 
-
             if ($validasi->fails()) {
                 $errors = $validasi->errors()->all();
                 return back()->withErrors($errors)->withInput();
@@ -207,17 +219,16 @@ class TransaksiController extends Controller
             if ($transaksi->save()) {
                 // Simpan data detail transaksi ke dalam tabel detail_transaksi
 
-                $total_harga = 0; //inisialisasi total_harga
+                $total_harga = 0;  // inisialisasi total_harga
                 foreach ($request->produk_id as $key => $value) {
-
                     $produk = ProdukModel::query()->where('id', $value)->first();
-                    $total_harga += $produk->harga_produk * $request->jumlah_beli_produk[$key]; //update total_harga
+                    $total_harga += $produk->harga_produk * $request->jumlah_beli_produk[$key];  // update total_harga
 
                     $detailTransaksi = DetailTransaksiModels::query()->where('transaksi_id', $id)->where('produk_id', $value)->first();
                     if ($detailTransaksi) {
                         $detailTransaksi->jumlah_beli_produk = $detailTransaksi->jumlah_beli_produk + $request->jumlah_beli_produk[$key];
                         $detailTransaksi->save();
-                    }else{
+                    } else {
                         $detailTransaksi = new DetailTransaksiModels();
                         $detailTransaksi->transaksi_id = $id;
                         $detailTransaksi->produk_id = $value;
@@ -226,14 +237,11 @@ class TransaksiController extends Controller
                         $detailTransaksi->jumlah_beli_produk = $request->jumlah_beli_produk[$key];
                         $detailTransaksi->save();
                     }
-
-
                 }
 
                 $transaksis = TransaksiModels::query()->where('id', $id)->first();
                 $transaksis->total_transaksi = $total_harga;
                 $transaksis->save();
-
             }
 
             // Respon sukses
@@ -261,7 +269,7 @@ class TransaksiController extends Controller
 
         $transaksi->delete();
 
-        $data  = [
+        $data = [
             'message' => 'Data transaksi berhasil dihapus.',
             'status' => 'success'
         ];

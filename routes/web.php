@@ -77,14 +77,6 @@ Route::get('/user/galeri', [GaleriController::class, 'index'])->name('galeri');
 Route::get('/galeri/modal/{id}', [GaleriController::class, 'showModal'])->name('showVideoModal');
 
 
-
-
-
-
-
-
-
-
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['cekUserLogin:admin']], function () {
         Route::resource('produk', ProdukController::class);
@@ -108,9 +100,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/admin/editPromosi/{id}', [PromosiController::class, 'show'])->name('editPromosi');
         Route::PUT('/admin/updatePromosi/{id}', [PromosiController::class, 'update'])->name('updatePromosi');
         Route::get('/admin/deletePromosi/{id}', [PromosiController::class, 'destroy'])->name('deletePromosi');
+        Route::post('/admin/delete/produkPromosi', [PromosiController::class, 'destroyProduk'])->name('deletePromosiProduk');
 
         // CRUD transaksi
         Route::get('/admin/addTransaksi', [TransaksiController::class, 'addTransaksi'])->name('addTransaksi');
+        Route::post('/admin/transaksi/getProdukPromosi', [TransaksiController::class, 'getProdukPromosi'])->name('getProdukPromosi');
         Route::POST('/admin/addDataTransaksi', [TransaksiController::class, 'store'])->name('addDataTransaksi');
         Route::get('/admin/editTransaksi/{id}', [TransaksiController::class, 'show'])->name('editTransaksi');
         Route::get('/admin/viewTransaksi/{id}', [TransaksiController::class, 'view'])->name('viewTransaksi');

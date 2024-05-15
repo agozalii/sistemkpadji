@@ -49,7 +49,7 @@
         const produkInput = `
             <div class="mb-3">
                 <label for="produk_id_${produkCount}" class="form-label">Produk ID ${produkCount}</label>
-                <select class="form-select" id="produk_id_${produkCount}" name="produk_id[]">
+                <select class="form-select" id="produk_id_${produkCount}" name="produk_id[]" onchange="addPromosi(${produkCount})">
                     @foreach ($produks as $row)
                         <option value="{{ $row->id }}">{{ $row->id }} - {{ $row->nama_produk }}</option>
                     @endforeach
@@ -57,7 +57,7 @@
             </div>
             <div class="mb-3">
                 <label for="promosi_id_${produkCount}" class="form-label">Promosi ID ${produkCount}</label>
-                <select class="form-select" id="promosi_id_${produkCount}" name="promosi_id[]">
+                <select class="form-select" id="promosi_id_${produkCount}" name="promosi_id[]" >
                     <option value="">Pilih Promosi</option>
                     @foreach ($promosis as $row)
                         <option value="{{ $row->id }}">{{ $row->id }} - {{ $row->nama_promosi }}</option>
@@ -70,5 +70,32 @@
             </div>
         `;
         document.getElementById('produk-container').insertAdjacentHTML('beforeend', produkInput);
+    }
+
+    function addPromosi(produkCount) {
+
+        const produkId = document.getElementById(`produk_id_`+produkCount).value;
+
+        $.ajax({
+            url: "{{ route('getProdukPromosi') }}",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                produkId: produkId
+            },
+            success: function(response) {
+                const promosiId = document.getElementById(`promosi_id_`+produkCount);
+                if(response.status == 'success') {
+                    promosiId.value = response.data;
+                }else{
+                    promosiId.value = '';
+                }
+                
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+
     }
 </script>
