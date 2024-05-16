@@ -134,6 +134,12 @@ class TransaksiController extends Controller
                         $haveTransaksi->jumlah_beli_produk = $haveTransaksi->jumlah_beli_produk + $request->jumlah_beli_produk[$key];
                         $haveTransaksi->save();
                     }
+
+                    $promosi = PromosiModel::query()->where('id', $request->promosi_id[$key])->first();
+                    if($promosi){
+                        $promosi->promosi_use += 1;
+                        $promosi->save();
+                    }
                 }
 
                 $transaksis = TransaksiModels::query()->where('id', $no_order)->first();

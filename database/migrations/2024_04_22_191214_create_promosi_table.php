@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('deskripsi_promosi');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
+            $table->integer('promosi_use');
             $table->timestamps();
         });
     }
