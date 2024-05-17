@@ -74,6 +74,28 @@
                 </div>
             @endforeach
         </div>
+
+        <p class="d-inline-flex gap-1 mt-5">
+        <div class="row">
+            <div class="col-md-3" style="justify-content: center;align-items: center;display: flex">
+                <a href="{{ url('/user/galeri?category=review') }}" class="btn btn-primary" role="button"
+                    data-bs-toggle="button" style="width: 100%;">Review & Unboxing</a>
+            </div>
+            <div class="col-md-3" style="justify-content: center;align-items: center;display: flex">
+                <a href="{{ url('/user/galeri?category=tutorial') }}" class="btn btn-info" role="button"
+                    data-bs-toggle="button" style="width: 100%">Tutorial Penggunaan</a>
+            </div>
+            <div class="col-md-3" style="justify-content: center;align-items: center;display: flex">
+                <a href="{{ url('/user/galeri?category=tips') }}" class="btn btn-success" role="button"
+                    data-bs-toggle="button" style="width: 100%">Tips and Trik</a>
+            </div>
+            <div class="col-md-3" style="justify-content: center;align-items: center;display: flex">
+                <a href="{{ url('user/galeri?category=petualangan') }}" class="btn btn-warning" role="button"
+                    data-bs-toggle="button" style="width: 100%">Petualangan Anda</a>
+            </div>
+
+        </div>
+        </p>
     </div>
 
 
@@ -81,10 +103,14 @@
     <div class="about-us">
         <div class="container">
             <h2>About Us</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis, nulla vel luctus bibendum, metus dui
-                tristique lacus, eu cursus justo purus sit amet tortor. Mauris sed metus id eros interdum vehicula. Nunc
-                volutpat arcu eu tellus vulputate, vitae fermentum mi varius. In gravida nisi at ex lobortis, sed varius
-                ligula eleifend. Nullam laoreet, erat eu fermentum faucibus, odio magna feugiat ipsum, sed fringilla lectus
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis, nulla vel luctus bibendum,
+                metus dui
+                tristique lacus, eu cursus justo purus sit amet tortor. Mauris sed metus id eros interdum vehicula.
+                Nunc
+                volutpat arcu eu tellus vulputate, vitae fermentum mi varius. In gravida nisi at ex lobortis, sed
+                varius
+                ligula eleifend. Nullam laoreet, erat eu fermentum faucibus, odio magna feugiat ipsum, sed fringilla
+                lectus
                 nulla vel lectus. Nulla sit amet semper lorem. Vivamus vitae
         </div>
     </div>

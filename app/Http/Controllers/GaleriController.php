@@ -12,12 +12,13 @@ class GaleriController extends Controller
      */
     public function index()
     {
+        $kategori = request('category');
         $reviews = VideoModel::query()->where('kategori', 'review')->get();
         $tutorials = VideoModel::query()->where('kategori', 'tutorial')->get();
         $tips = VideoModel::query()->where('kategori', 'tips')->get();
         $petualangans = VideoModel::query()->where('kategori', 'petualangan')->get();
 
-        return view('user.galeri', compact('reviews', 'tutorials', 'tips', 'petualangans'));
+        return view('user.galeri', compact('reviews', 'tutorials', 'tips', 'petualangans', 'kategori'));
     }
 
     public function showModal($id)

@@ -20,31 +20,36 @@
                         <ul class="nav nav-tabs" style="justify-content: center;align-items: center"
                             id="custom-tabs-three-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill"
-                                    href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home"
-                                    aria-selected="true">Review & Unboxing</a>
+                                <a class="nav-link {{ $kategori == '' || $kategori == 'review' ? 'active' : '' }}"
+                                    id="custom-tabs-three-review-tab" data-toggle="pill" href="#custom-tabs-three-review"
+                                    role="tab" aria-controls="custom-tabs-three-review" aria-selected="true">Review &
+                                    Unboxing</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill"
-                                    href="#custom-tabs-three-profile" role="tab"
-                                    aria-controls="custom-tabs-three-profile" aria-selected="false">Tutorial Penggunaan</a>
+                                <a class="nav-link {{ $kategori == 'tutorial' ? 'active' : '' }}"
+                                    id="custom-tabs-three-tutorial-tab" data-toggle="pill"
+                                    href="#custom-tabs-three-tutorial" role="tab"
+                                    aria-controls="custom-tabs-three-tutorial" aria-selected="false">Tutorial Penggunaan</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-three-messages-tab" data-toggle="pill"
-                                    href="#custom-tabs-three-messages" role="tab"
-                                    aria-controls="custom-tabs-three-messages" aria-selected="false">Tips and Trik</a>
+                                <a class="nav-link {{ $kategori == 'tips' ? 'active' : '' }}"
+                                    id="custom-tabs-three-tips-tab" data-toggle="pill" href="#custom-tabs-three-tips"
+                                    role="tab" aria-controls="custom-tabs-three-tips" aria-selected="false">Tips and
+                                    Trik</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-three-settings-tab" data-toggle="pill"
-                                    href="#custom-tabs-three-settings" role="tab"
-                                    aria-controls="custom-tabs-three-settings" aria-selected="false">Petualangan Anda</a>
+                                <a class="nav-link {{ $kategori == 'petualangan' ? 'active' : '' }}"
+                                    id="custom-tabs-three-petualangan-tab" data-toggle="pill"
+                                    href="#custom-tabs-three-petualangan" role="tab"
+                                    aria-controls="custom-tabs-three-petualangan" aria-selected="false">Petualangan Anda</a>
                             </li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content" id="custom-tabs-three-tabContent">
-                            <div class="tab-pane fade active show" id="custom-tabs-three-home" role="tabpanel"
-                                aria-labelledby="custom-tabs-three-home-tab">
+                            <div class="tab-pane fade {{ $kategori == '' || $kategori == 'review' ? 'show active' : '' }}"
+                                id="custom-tabs-three-review" role="tabpanel"
+                                aria-labelledby="custom-tabs-three-review-tab">
                                 <div class="row">
                                     @foreach ($reviews as $video)
                                         <div class="col-md-6" style="margin-top:50px;">
@@ -65,8 +70,9 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel"
-                                aria-labelledby="custom-tabs-three-profile-tab">
+                            <div class="tab-pane fade {{ $kategori == 'tutorial' ? 'show active' : '' }}"
+                                id="custom-tabs-three-tutorial" role="tabpanel"
+                                aria-labelledby="custom-tabs-three-tutorial-tab">
                                 @foreach ($tutorials as $video)
                                     <div class="col-md-6" style="margin-top:50px;">
                                         <a href="#" class="video-link"
@@ -85,8 +91,8 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <div class="tab-pane fade" id="custom-tabs-three-messages" role="tabpanel"
-                                aria-labelledby="custom-tabs-three-messages-tab">
+                            <div class="tab-pane fade {{ $kategori == 'tips' ? 'show active' : '' }}"
+                                id="custom-tabs-three-tips" role="tabpanel" aria-labelledby="custom-tabs-three-tips-tab">
                                 @foreach ($tips as $video)
                                     <div class="col-md-6" style="margin-top:50px;">
                                         <a href="#" class="video-link"
@@ -105,8 +111,9 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <div class="tab-pane fade" id="custom-tabs-three-settings" role="tabpanel"
-                                aria-labelledby="custom-tabs-three-settings-tab">
+                            <div class="tab-pane fade {{ $kategori == 'petualangan' ? 'show active' : '' }}"
+                                id="custom-tabs-three-petualangan" role="tabpanel"
+                                aria-labelledby="custom-tabs-three-petualangan-tab">
                                 @foreach ($petualangans as $video)
                                     <div class="col-md-6" style="margin-top:50px;">
                                         <a href="#" class="video-link"
