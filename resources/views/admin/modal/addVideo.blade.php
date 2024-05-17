@@ -13,14 +13,27 @@
                         <label class="col-sm-5 col-form-label">Id Video</label>
                         <div class="col-sm-7">
                             <input type="text" class="form-control-plaintext" id="id" name="id"
-                                value="{{$id}} " readonly>
+                                value="{{ $id }} " readonly>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-5 col-form-label">Nama Admin</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="nama" name="nama" value="{{ Auth::user()->nama }}" readonly>
+                            <input type="text" class="form-control" id="nama" name="nama"
+                                value="{{ Auth::user()->nama }}" readonly>
                             <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-5 col-form-label">Kategori</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="kategori" name="kategori">
+                                <option value="">Pilih</option>
+                                <option value="review">Review & Unboxing</option>
+                                <option value="tutorial">Tutorial Penggunaan</option>
+                                <option value="tips">Tips & TRik</option>
+                                <option value="petualangan">Petualangan Kalian</option>
+                            </select>
                         </div>
                     </div>
                     <div class="mb-3 row">
@@ -34,7 +47,8 @@
                     <div class="mb-3 row">
                         <label class="col-sm-5 col-form-label">Video</label>
                         <div class="col-sm-7">
-                            <input class="form-control" type="file" accept=".mp4, .avi, .mov, .mkv" id="video" name="video">
+                            <input class="form-control" type="file" accept=".mp4, .avi, .mov, .mkv" id="video"
+                                name="video">
                         </div>
                     </div>
                     <div class="mb-3 row">

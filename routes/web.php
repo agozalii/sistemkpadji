@@ -122,7 +122,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['cekUserLogin:manajer']], function () {
         // Route::resource('pegawai',LoginController::class);
         Route::get('pegawai', [LoginController::class, 'tampil']);
-        Route::resource('laporan', LaporanController::class);
+        // Route::resource('laporan', LaporanController::class);
+        Route::get('/manajer/laporanPenjualan', [LaporanController::class, 'index'])->name('laporan.penjualan');
+        Route::get('/manajer/laporanPromosi', [LaporanController::class, 'promosi'])->name('laporan.promosi');
         Route::resource('kritiksaran', KritikSaranController::class);
 
         // // CRUD PEGAWAI

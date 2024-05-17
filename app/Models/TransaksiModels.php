@@ -13,14 +13,15 @@ class TransaksiModels extends Model
 
     protected $primaryKey = 'id';
     protected $keyType = 'string';
-    
-    protected $guarded = [];
-    
 
-    public function detailTransaksi()
+    protected $guarded = [];
+
+
+    public function detail()
     {
         return $this->hasMany(DetailTransaksiModels::class, 'transaksi_id', 'id');
     }
+
 
     // public function getIdAttribute($value)
     // {

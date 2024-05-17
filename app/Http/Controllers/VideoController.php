@@ -44,6 +44,7 @@ class VideoController extends Controller
     {
         $data = new VideoModel();
         $data->id = $request->id;
+        $data->kategori = $request->kategori;
         $data->tumbnail = $request->tumbnail;
         $data->video = $request->video;
         $data->judul_video = $request->judul_video;
@@ -111,6 +112,7 @@ class VideoController extends Controller
 
         $field = [
             'id' => $request->id,
+            'kategori' => $request->kategori,
             'video' => $filename,
             'judul_video' => $request->judul_video,
             'deskripsi_video' => $request->deskripsi_video,

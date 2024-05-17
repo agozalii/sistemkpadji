@@ -5,9 +5,9 @@
 @endsection
 
 @section('content')
-<div class="welcome-message" style="margin-top: 75px;">
-    Selamat Datang
-</div>
+    <div class="welcome-message" style="margin-top: 75px;">
+        Selamat Datang
+    </div>
     <div id="carouselExampleIndicators" style="margin-top: 20px;" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -19,21 +19,24 @@
                 <img class="d-block w-100" src="{{ url('storage/img/forester1.jpg') }}" alt="First slide">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Slider One Item</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, nulla, tempore. Deserunt excepturi quas vero.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, nulla, tempore. Deserunt excepturi
+                        quas vero.</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img class="d-block w-100" src="{{ url('storage/img/forester1.jpg') }}" alt="Second slide">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Slider One Item</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, nulla, tempore. Deserunt excepturi quas vero.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, nulla, tempore. Deserunt excepturi
+                        quas vero.</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img class="d-block w-100" src="{{ url('storage/img/forester1.jpg') }}" alt="Third slide">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Slider One Item</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, nulla, tempore. Deserunt excepturi quas vero.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, nulla, tempore. Deserunt excepturi
+                        quas vero.</p>
                 </div>
             </div>
         </div>
@@ -47,19 +50,24 @@
         </a>
     </div>
 
-    <div class="container mb-4">
+    <div class="container mb-4 mt-4">
         <div class="row">
             @foreach ($products as $product)
                 <div class="col-md-3 mb-4 mt-1">
                     <div class="item">
-                        <div class="item-image" style="width: 250px; height: 250px; border: 1px solid #ccc; position: relative;">
+                        <div class="item-image"
+                            style="width: 250px; height: 250px; border: 1px solid #ccc; position: relative;">
                             <!-- Tombol tambahkan ke favorit -->
-                            <button class="btn btn-outline-danger" style="position: absolute; top: 10px; right: 10px;"><i class="fa fa-heart"></i></button>
+                            <button class="btn btn-outline-danger" style="position: absolute; top: 10px; right: 10px;"><i
+                                    class="fa fa-heart"></i></button>
                             <!-- Gambar produk -->
-                            <img src="{{ asset('storage/produk/' . $product->gambar_produk) }}" alt="Gambar Produk" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="{{ asset('storage/produk/' . $product->gambar_produk) }}" alt="Gambar Produk"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <div class="item-meta text-center" style="font-size: 15px;"> <!-- Menambahkan font-size 15px dan centering -->
-                            <p style="margin-top: 17px; font-weight: bold;">{{ $product->nama_produk }}</p> <!-- Menjadikan nama produk tebal (bold) -->
+                        <div class="item-meta text-center" style="font-size: 15px;">
+                            <!-- Menambahkan font-size 15px dan centering -->
+                            <p style="margin-top: 17px; font-weight: bold;">{{ $product->nama_produk }}</p>
+                            <!-- Menjadikan nama produk tebal (bold) -->
                             <p style="margin-top: -15px; color: #148E8E;">Harga: {{ $product->harga_produk }}</p>
                         </div>
                     </div>

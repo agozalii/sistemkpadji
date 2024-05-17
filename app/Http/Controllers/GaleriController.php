@@ -12,18 +12,20 @@ class GaleriController extends Controller
      */
     public function index()
     {
-        $videos = VideoModel::all();
+        $reviews = VideoModel::query()->where('kategori', 'review')->get();
+        $tutorials = VideoModel::query()->where('kategori', 'tutorial')->get();
+        $tips = VideoModel::query()->where('kategori', 'tips')->get();
+        $petualangans = VideoModel::query()->where('kategori', 'petualangan')->get();
 
-    return view('user.galeri', compact('videos'));
-
+        return view('user.galeri', compact('reviews', 'tutorials', 'tips', 'petualangans'));
     }
 
     public function showModal($id)
-{
-    $video = VideoModel::find($id); // Ambil data video berdasarkan ID
+    {
+        $video = VideoModel::find($id); // Ambil data video berdasarkan ID
 
-    return view('user.modal.showvideos', compact('video'));
-}
+        return view('user.modal.showvideos', compact('video'));
+    }
     /**
      * Show the form for creating a new resource.
      */

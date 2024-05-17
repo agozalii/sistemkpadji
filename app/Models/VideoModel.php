@@ -14,6 +14,7 @@ class VideoModel extends Model
     protected $fillable = [
         'id',
         'user_id',
+        'kategori',
         'tumbnail',
         'video',
         'judul_video',

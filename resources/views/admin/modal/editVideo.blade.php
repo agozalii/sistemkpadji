@@ -15,14 +15,31 @@
                         <label class="col-sm-5 col-form-label">Id Video</label>
                         <div class="col-sm-7">
                             <input type="text" class="form-control-plaintext" id="id" name="id"
-                            value="{{ $data->id }}" readonly>
+                                value="{{ $data->id }}" readonly>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-5 col-form-label">Nama Admin</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="nama" name="nama" value="{{ Auth::user()->nama }}" readonly>
+                            <input type="text" class="form-control" id="nama" name="nama"
+                                value="{{ Auth::user()->nama }}" readonly>
                             <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-5 col-form-label">Kategori</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" id="kategori" name="kategori">
+                                <option value="">Pilih</option>
+                                <option value="review" {{ $data->kategori == 'review' ? 'selected' : '' }}>Review &
+                                    Unboxing</option>
+                                <option value="tutorial" {{ $data->kategori == 'tutorial' ? 'selected' : '' }}>Tutorial
+                                    Penggunaan</option>
+                                <option value="tips" {{ $data->kategori == 'tips' ? 'selected' : '' }}>Tips & TRik
+                                </option>
+                                <option value="petualangan" {{ $data->kategori == 'petualangan' ? 'selected' : '' }}>
+                                    Petualangan Kalian</option>
+                            </select>
                         </div>
                     </div>
 
@@ -30,8 +47,10 @@
                         <label class="col-sm-5 col-form-label">Video</label>
                         <div class="col-sm-7">
                             <input type="hidden" name="video" value="{{ $data->video }}">
-                            <video src="{{ asset('storage/videos/' . $data->video) }}" id="previewVideo" class="mb-2 preview" width="320" height="240" controls></video>
-                            <input class="form-control" type="file" accept=".mp4, .avi, .mov" value="{{ $data->video }} id="inputVideo" name="video" onchange="previewVideo()">
+                            <video src="{{ asset('storage/videos/' . $data->video) }}" id="previewVideo"
+                                class="mb-2 preview" width="320" height="240" controls></video>
+                            <input class="form-control" type="file" accept=".mp4, .avi, .mov"
+                                value="{{ $data->video }} id="inputVideo" name="video" onchange="previewVideo()">
                         </div>
                     </div>
 

@@ -37,20 +37,19 @@
                     {{ $message }}
                 </div>
             @endif
-            <div class="table-responsive" style="overflow-x: auto; height: 600px;">
+            <div class="table-responsive" style="overflow-x: auto; height: 600px">
                 <table class="table table-bordered table-striped" style="min-width: 1500px; overflow-y: auto;">
                     <thead>
                         <tr>
                             <th width="50px" scope="col">No</th>
                             <th width="50px" scope="col">Id</th>
                             <th width="100px">Nama Admin</th>
+                            <th width="100px">Kategori</th>
                             <th width="100px">Tumbnail</th>
                             <th width="200px">Video</th>
                             <th width="250px">Judul</th>
                             <th width="250px">Deskripsi</th>
                             <th width="250px">Aksi</th>
-
-
                         </tr>
                     </thead>
                     <tbody>
@@ -59,8 +58,9 @@
                                 <th scope="row">{{ $loop->iteration }}</th>
                                 <td>{{ $x->id }}</td>
                                 <td>{{ $x->user->nama }}</td>
+                                <td>{{ ucwords($x->kategori) }}</td>
                                 <td><img src="{{ asset('storage/tumbnail/' . $x->tumbnail) }}" alt="Gambar Produk"
-                                    width="100"></td>
+                                        width="100"></td>
                                 <td>
                                     <video width="320" height="150" controls>
                                         <source src="{{ asset('storage/videos/' . $x->video) }}" type="video/mp4">
@@ -84,100 +84,98 @@
                 </table>
             </div>
 
-    </div>
-    <div class="tampilData" style="display:none;"></div>
-    <div class="tampilEditData" style="display:none;"></div>
+        </div>
+        <div class="tampilData" style="display:none;"></div>
+        <div class="tampilEditData" style="display:none;"></div>
 
 
 
 
-    <script>
-        $('#addDataVideo').click(function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: '{{ route('addVideo') }}',
-                success: function(response) {
-                    $('.tampilData').html(response).show();
-                    $('#addVideo').modal("show");
-                }
+        <script>
+            $('#addDataVideo').click(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ route('addVideo') }}',
+                    success: function(response) {
+                        $('.tampilData').html(response).show();
+                        $('#addVideo').modal("show");
+                    }
+                });
             });
-        });
 
-        $('.editVideo').click(function(e) {
-            e.preventDefault();
-            var id = $(this).data('id');
+            $('.editVideo').click(function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
 
-            $.ajax({
-                type: "GET",
-                url: "{{ route('editVideo', ['id' => ':id']) }}".replace(':id', id),
-                success: function(response) {
-                    $('.tampilEditData').html(response).show();
-                    $('#editVideo').modal("show");
-                }
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('editVideo', ['id' => ':id']) }}".replace(':id', id),
+                    success: function(response) {
+                        $('.tampilEditData').html(response).show();
+                        $('#editVideo').modal("show");
+                    }
+                });
             });
-        });
 
-        $.ajaxSetup({
-            headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-            },
-        });
-        $('.deleteVideo').click(function(e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener("mouseenter", Swal.stopTimer);
-                    toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 1000);
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
                 },
             });
+            $('.deleteVideo').click(function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    },
+                });
 
-            Swal.fire({
-                title: 'Hapus data ?',
-                text: "Kamu yakin untuk menghapus data ini ",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "GET",
-                        url: "{{ route('deleteVideo', ['id' => ':id']) }}".replace(':id', id),
-                        dataType: "json",
-                        success: function(response) {
-                            // ini diambil dari controller
-                            if (response.status === 'success') {
-                                Toast.fire({
-                                    icon: "success",
-                                    // ini diambil dari controller
-                                    title: response.message,
+                Swal.fire({
+                    title: 'Hapus data ?',
+                    text: "Kamu yakin untuk menghapus data ini ",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ route('deleteVideo', ['id' => ':id']) }}".replace(':id', id),
+                            dataType: "json",
+                            success: function(response) {
+                                // ini diambil dari controller
+                                if (response.status === 'success') {
+                                    Toast.fire({
+                                        icon: "success",
+                                        // ini diambil dari controller
+                                        title: response.message,
+                                    });
+                                    // window.location.reload()
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                // Tampilkan notifikasi error jika terjadi kesalahan
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Terjadi kesalahan saat menghapus data',
+                                    icon: 'error'
                                 });
-                                // window.location.reload()
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            // Tampilkan notifikasi error jika terjadi kesalahan
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'Terjadi kesalahan saat menghapus data',
-                                icon: 'error'
-                            });
-                        }
-                    });
-                }
-            })
-        });
-
-
-    </script>
-@endsection
+                        });
+                    }
+                })
+            });
+        </script>
+    @endsection
