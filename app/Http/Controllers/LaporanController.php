@@ -43,7 +43,7 @@ class LaporanController extends Controller
         if ($tgl_awal && $tgl_akhir) {
             $data = PromosiModel::query()
                 ->whereBetween('tanggal_mulai', [date('Y-m-d', strtotime($tgl_awal)), date('Y-m-d', strtotime($tgl_akhir))])
-                ->orWhereBetween('tanggal_akhir', [date('Y-m-d', strtotime($tgl_awal)), date('Y-m-d', strtotime($tgl_akhir))])
+                ->orWhereBetween('tanggal_selesai', [date('Y-m-d', strtotime($tgl_awal)), date('Y-m-d', strtotime($tgl_akhir))])
                 ->get();
         } else {
             $data = PromosiModel::query()

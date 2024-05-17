@@ -17,7 +17,7 @@
         <div class="card-header">
             <h3 class="card-title col-md-12 mb-4">Data Laporan Promosi</h3>
             <div class="mt-2">
-                <form action="{{ route('laporan.penjualan') }}" method="GET">
+                <form action="{{ route('laporan.promosi') }}" method="GET">
                     <div class="row">
                         <div class="col-md-3">
                             <label for="tgl_awal">Tgl. Awal</label>
@@ -32,7 +32,7 @@
                         <div class="col-md-3 d-inline-flex gap-1">
                             <button type="submit" class="btn btn-primary" style="margin-top: 32px"><i
                                     class="fa fa-filter"></i> Filter</button>
-                            <a href="{{ route('laporan.penjualan') }}" class="btn btn-danger" style="margin-top: 32px"><i
+                            <a href="{{ route('laporan.promosi') }}" class="btn btn-danger" style="margin-top: 32px"><i
                                     class="fa fa-eraser"></i> Reset</a>
                         </div>
                     </div>
