@@ -68,8 +68,13 @@
                                 <td>{{ $d->metode_pembayaran }}</td>
                             </tr>
                         @endforeach
-
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="5">Total Transaksi</th>
+                            <th>Rp. {{ number_format($data->sum('total_transaksi'), 2) }}</th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -85,11 +90,17 @@
                     orientation: 'landscape',
                     customize: function(doc) {
                         var tableBody = doc.content[1].table.body;
+
+                        // Menambahkan baris total transaksi ke tableBody
+                        var totalTransaksi =
+                            'Rp. {{ number_format($data->sum('total_transaksi'), 2) }}';
+                        var totalRow = ['', '', '', '', 'Total Transaksi', totalTransaksi];
+                        tableBody.push(totalRow);
+
                         tableBody.forEach(function(row) {
                             row.forEach(function(cell) {
                                 cell.margin = [10, 5, 10,
-                                    5
-                                ]; // [left, top, right, bottom]
+                                5]; // [left, top, right, bottom]
                             });
                         });
 

@@ -50,6 +50,7 @@
                             <th>Nama Promosi</th>
                             <th>Tanggal Mulai</th>
                             <th>Tanggal Selesai</th>
+                            <th>Penggunaan Promosi</th>
                             <th>Rating</th>
                             <th>Status</th>
                         </tr>
@@ -64,6 +65,7 @@
                                 <td>{{ $d->nama_promosi }}</td>
                                 <td>{{ date('d F Y', strtotime($d->tanggal_mulai)) }}</td>
                                 <td>{{ date('d F Y', strtotime($d->tanggal_selesai)) }}</td>
+                                <td>{{ $d->promosi_use }}</td>
                                 <td>
                                     @php
                                         // Tentukan jumlah bintang yang dicentang berdasarkan nilai promosi_use

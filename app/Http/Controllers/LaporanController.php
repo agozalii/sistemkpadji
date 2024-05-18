@@ -25,8 +25,6 @@ class LaporanController extends Controller
                 ->get();
         }
 
-        // dd($data);
-
         return view('manajer.penjualan', [
             'data' => $data,
             'user' => Auth::user(),
