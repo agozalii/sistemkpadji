@@ -46,7 +46,12 @@ class TransaksiController extends Controller
     public function getProdukPromosi(Request $request)
     {
         $id = $request->input('produkId');
-        $data = DetailPromosiModel::query()->where('id_produk', $id)->orderBy('created_at', 'desc')->first();
+        $tanggal_sekarang = date('Y-m-d');
+        $data = DetailPromosiModel::query()->where('id_produk', $id)
+        ->join('promosi', 'promosi.id', '=', 'detail_promosi.id_promosi')
+        ->where('promosi.tanggal_selesai', '>', $tanggal_sekarang)
+        ->where('promosi.tanggal_mulai', '<=', $tanggal_sekarang)
+        ->first();
         if ($data) {
             return response()->json([
                 'status' => 'success',
@@ -114,11 +119,11 @@ class TransaksiController extends Controller
 
             if ($transaksi->save()) {
                 // Simpan data detail transaksi ke dalam tabel detail_transaksi
-
+                $harga = 0;
                 $total_harga = 0;  // inisialisasi total_harga
                 foreach ($request->produk_id as $key => $value) {
                     $produk = ProdukModel::query()->where('id', $value)->first();
-                    $total_harga += $produk->harga_produk * $request->jumlah_beli_produk[$key];
+                    $promosi = PromosiModel::query()->where('id', $request->promosi_id[$key])->first();
 
                     $haveTransaksi = DetailTransaksiModels::query()->where('transaksi_id', $no_order)->where('produk_id', $value)->first();
 
@@ -127,18 +132,36 @@ class TransaksiController extends Controller
                         $detailTransaksi->transaksi_id = $no_order;
                         $detailTransaksi->produk_id = $value;
                         $detailTransaksi->harga_produk = $produk->harga_produk;
+                        if($promosi){
+                            $detailTransaksi->promo_value = $promosi->promosi_value;
+                            $detailTransaksi->harga_promo = $produk->harga_produk - ($produk->harga_produk * $promosi->promosi_value / 100);
+                        }else{
+                            $detailTransaksi->promo_value = 0;
+                            $detailTransaksi->harga_promo = 0;
+                        }
                         $detailTransaksi->promosi_id = $request->promosi_id[$key];
                         $detailTransaksi->jumlah_beli_produk = $request->jumlah_beli_produk[$key];
                         $detailTransaksi->save();
                     } else {
                         $haveTransaksi->jumlah_beli_produk = $haveTransaksi->jumlah_beli_produk + $request->jumlah_beli_produk[$key];
+                        if($promosi){
+                            $haveTransaksi->promo_value = $promosi->promosi_value;
+                            $haveTransaksi->harga_promo = $produk->harga_produk - ($produk->harga_produk * $promosi->promosi_value / 100);
+                        }else{
+                            $haveTransaksi->promo_value = 0;
+                            $haveTransaksi->harga_promo = 0;
+                        }
                         $haveTransaksi->save();
                     }
 
-                    $promosi = PromosiModel::query()->where('id', $request->promosi_id[$key])->first();
+                    
                     if($promosi){
+                        $harga = $produk->harga_produk - ($produk->harga_produk * $promosi->promosi_value / 100);
+                        $total_harga += $harga * $request->jumlah_beli_produk[$key];
                         $promosi->promosi_use += 1;
                         $promosi->save();
+                    }else{
+                        $total_harga += $produk->harga_produk * $request->jumlah_beli_produk[$key];
                     }
                 }
 
@@ -228,11 +251,19 @@ class TransaksiController extends Controller
                 $total_harga = 0;  // inisialisasi total_harga
                 foreach ($request->produk_id as $key => $value) {
                     $produk = ProdukModel::query()->where('id', $value)->first();
+                    $promosi = PromosiModel::query()->where('id', $request->promosi_id[$key])->first();
                     $total_harga += $produk->harga_produk * $request->jumlah_beli_produk[$key];  // update total_harga
 
                     $detailTransaksi = DetailTransaksiModels::query()->where('transaksi_id', $id)->where('produk_id', $value)->first();
                     if ($detailTransaksi) {
                         $detailTransaksi->jumlah_beli_produk = $detailTransaksi->jumlah_beli_produk + $request->jumlah_beli_produk[$key];
+                        if($promosi){
+                            $detailTransaksi->promo_value = $promosi->promosi_value;
+                            $detailTransaksi->harga_promo = $produk->harga_produk - ($produk->harga_produk * $promosi->promosi_value / 100);
+                        }else{
+                            $detailTransaksi->promo_value = 0;
+                            $detailTransaksi->harga_promo = 0;
+                        }
                         $detailTransaksi->save();
                     } else {
                         $detailTransaksi = new DetailTransaksiModels();
@@ -240,10 +271,27 @@ class TransaksiController extends Controller
                         $detailTransaksi->produk_id = $value;
                         $detailTransaksi->harga_produk = $produk->harga_produk;
                         $detailTransaksi->promosi_id = $request->promosi_id[$key];
+                        if($promosi){
+                            $detailTransaksi->promo_value = $promosi->promosi_value;
+                            $detailTransaksi->harga_promo = $produk->harga_produk - ($produk->harga_produk * $promosi->promosi_value / 100);
+                        }else{
+                            $detailTransaksi->promo_value = 0;
+                            $detailTransaksi->harga_promo = 0;
+                        }
                         $detailTransaksi->jumlah_beli_produk = $request->jumlah_beli_produk[$key];
                         $detailTransaksi->save();
                     }
+
+                    if($promosi){
+                        $harga = $produk->harga_produk - ($produk->harga_produk * $promosi->promosi_value / 100);
+                        $total_harga += $harga * $request->jumlah_beli_produk[$key];
+                        $promosi->promosi_use += 1;
+                        $promosi->save();
+                    }else{
+                        $total_harga += $produk->harga_produk * $request->jumlah_beli_produk[$key];
+                    }
                 }
+                 
 
                 $transaksis = TransaksiModels::query()->where('id', $id)->first();
                 $transaksis->total_transaksi = $total_harga;

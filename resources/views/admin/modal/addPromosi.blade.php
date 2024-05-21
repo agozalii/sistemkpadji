@@ -58,6 +58,15 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
+                        <label for="promosi_value" class="col-sm-5 col-form-label">Promo Value</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="promosi_value" name="promosi_value"
+                                    placeholder="%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
                         <div class="col-sm-5 d-inline-block">
                             <label class="form-label">Daftar Produk Promosi</label><br>
                             <button type="button" id="add-product" class="btn btn-primary mt-2"><i

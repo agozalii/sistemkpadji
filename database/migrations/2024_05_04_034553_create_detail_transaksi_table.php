@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('promosi_id')->nullable();
             // $table->foreign('promosi_id')->references('id')->on('promosi');
             $table->integer('harga_produk');
+            $table->integer('promo_value')->nullable();
+            $table->integer('harga_promo')->nullable();
             $table->integer('jumlah_beli_produk');
             $table->timestamps();
         });

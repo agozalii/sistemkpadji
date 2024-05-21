@@ -51,6 +51,7 @@ class PromosiController extends Controller
         $data->deskripsi_promosi = $request->deskripsi_promosi;
         $data->tanggal_mulai = $request->tanggal_mulai;
         $data->tanggal_selesai = $request->tanggal_selesai;
+        $data->promosi_value = $request->promosi_value;
 
         if ($request->hasFile('gambar_promosi')) {
             $photo = $request->file('gambar_promosi');
@@ -128,6 +129,7 @@ class PromosiController extends Controller
         $data->deskripsi_promosi = $request->deskripsi_promosi;
         $data->tanggal_mulai = $request->tanggal_mulai;
         $data->tanggal_selesai = $request->tanggal_selesai;
+        $data->promosi_value = $request->promosi_value;
 
         if ($data->save()) {
         

@@ -19,6 +19,7 @@ class PromosiModel extends Model
         'deskripsi_promosi',
         'tanggal_mulai',
         'tanggal_selesai',
+        'promo_value',
     ];
 
     public function getIdAttribute($value)
