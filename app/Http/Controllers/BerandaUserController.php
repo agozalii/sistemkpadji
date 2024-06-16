@@ -37,22 +37,16 @@ class BerandaUserController extends Controller
 
         return view('user.tentangkami');
     }
+    public function vip()
+    {
+
+        return view('user.vip');
+    }
 
     public function promo()
     {
-
-        // return view('user.promo');
-        // Mengambil data promosi dari model Promo
-        // $promos = PromosiModel::all();
-
-        // // Mengirim data promosi ke view 'nama_view'
-        // return view('user.promo', compact('promos'));
-
-        // Ambil semua promosi dari model
-        // Ambil semua promosi dari model
         $promos = PromosiModel::all();
 
-        // Filter promosi bulan ini dan promosi lainnya
         $promoBulanIni = $promos->filter(function ($promo) {
             return Carbon::parse($promo->tanggal_mulai)->format('m') === Carbon::now()->format('m');
         });

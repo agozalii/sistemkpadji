@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kritiksaran', function (Blueprint $table) {
+        Schema::create('kategori', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 200);
-            $table->string('email', 200);
-            $table->string('no_telpon', 15)->nullable();
-            $table->text('pesan');
+            $table->string('name');
+            $table->string('slug');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kritiksaran');
+        Schema::dropIfExists('kategori');
     }
 };

@@ -29,15 +29,14 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            // $table->increments('id');
-            $table->string('nama');
-            $table->string('username')->nullable()->unique();
+            $table->string('nama', 200);
+            $table->string('username', 100)->nullable()->unique();
             $table->string('password')->nullable();
             $table->enum('role', ['admin', 'manajer', 'pelanggan'])->nullable();
             $table->enum('jenis_kelamin', ['L', 'P']);
-            $table->char('nomor_telpon');
-            $table->char('email');
-            $table->char('alamat');
+            $table->string('nomor_telpon', 15);
+            $table->string('email', 100);
+            $table->text('alamat');
             $table->timestamps();
         });
     }

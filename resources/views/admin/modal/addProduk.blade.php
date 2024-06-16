@@ -13,52 +13,60 @@
                         <label class="col-sm-5 col-form-label">Id Produk</label>
                         <div class="col-sm-7">
                             <input type="text" class="form-control-plaintext" id="id" name="id"
-                                value="{{$id}} " readonly>
+                                value="{{ $id }} " readonly>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-5 col-form-label">Foto</label>
                         <div class="col-sm-7">
                             <input class="form-control " type="file" accept=".png, .jpg, .jpeg" id="gambarProduk"
-                                name="gambar_produk" onchange="previewImg()">
+                                name="gambar_produk" onchange="previewImg()" required>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-5 col-form-label">Nama Produk</label>
                         <div class="col-sm-7">
                             <input type="text" class="form-control" id="nama_produk" name="nama_produk"
-                                value=" ">
+                                value=" " required>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-5 col-form-label">Harga Produk</label>
                         <div class="col-sm-7">
                             <input type="number" class="form-control" id="hargaProduk" name="harga_produk"
-                                value="">
+                                value="" required>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label class="col-sm-5 col-form-label">Kategori Produk</label>
+                        <label class="col-sm-5 col-form-label">Kategori</label>
                         <div class="col-sm-7">
-                            <select type="text" class="form-control" name="kategori_produk" id="kategori_produk">
+                            <select type="text" class="form-control" name="kategori_produk" id="kategori_produk"
+                                required>
                                 <option value="">Pilih Kategori</option>
-                                <option value="tas">Tas</option>
-                                <option value="sepatu">Sepatu</option>
-                                <option value="pakaian">Pakaian</option>
+                                @foreach ($kategoris as $k)
+                                    <option value="{{ $k->id }}">{{ $k->name }}</option>
+                                @endforeach
+
                             </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-5 col-form-label">Stok</label>
+                        <div class="col-sm-7">
+                            <input type="number" class="form-control" id="stok" name="stok" required>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-5 col-form-label">Deskripsi Produk</label>
                         <div class="col-sm-7">
                             <input type="text" class="form-control" id="deskripsiProduk" name="deskripsi_produk"
-                                value="">
+                                value="" required>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-sm-5 col-form-label">Merk Produk</label>
                         <div class="col-sm-7">
-                            <select type="text" class="form-control" name="merk_produk" id="merk_produk">
+                            <select type="text" class="form-control" name="merk_produk" id="merk_produk" required>
                                 <option value="">Pilih Merk</option>
                                 <option value="consina">Consina</option>
                                 <option value="forester">Forester</option>
@@ -68,7 +76,8 @@
                     <div class="mb-3 row">
                         <label class="col-sm-5 col-form-label">Status Produk</label>
                         <div class="col-sm-7">
-                            <select type="text" class="form-control" name="status_produk" id="status_produk">
+                            <select type="text" class="form-control" name="status_produk" id="status_produk"
+                                required>
                                 <option value="">Pilih Status</option>
                                 <option value="new arrival">New Arrival</option>
                                 <option value="lama">Lama</option>

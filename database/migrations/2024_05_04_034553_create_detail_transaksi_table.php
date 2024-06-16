@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('detail_transaksi', function (Blueprint $table) {
             $table->id();
-            $table->string('produk_id');
+            $table->string('produk_id', 10);
             // $table->foreign('produk_id')->references('id')->on('produk');
-            $table->string('transaksi_id');
+            $table->string('transaksi_id', 20);
             // $table->foreign('transaksi_id')->references('id')->on('transaksi');
-            $table->string('promosi_id')->nullable();
+            $table->string('promosi_id', 10)->nullable();
             // $table->foreign('promosi_id')->references('id')->on('promosi');
             $table->integer('harga_produk');
             $table->integer('promo_value')->nullable();

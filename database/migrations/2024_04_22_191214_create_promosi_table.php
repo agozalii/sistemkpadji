@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('promosi', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->string('gambar_promosi');
-            $table->string('nama_promosi');
-            $table->string('deskripsi_promosi');
+            $table->text('gambar_promosi');
+            $table->string('nama_promosi', 200);
+            $table->text('deskripsi_promosi');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
-            $table->integer('promosi_use');
+            $table->integer('promosi_use')->nullable();
             $table->integer('promosi_value');
             $table->timestamps();
         });

@@ -10,7 +10,7 @@
 <div class="card">
     <div class="card-header">
         <div class="mt-2">
-            <form action="{{ route('laporan.penjualan') }}" method="GET">
+            <form action="{{ route('laporan.penjualan.admin') }}" method="GET">
                 <div class="row">
                     <div class="col-md-3">
                         <label for="tgl_awal">Tgl. Awal</label>
@@ -43,16 +43,16 @@
 
             </div>
             <div class="row col-md-12 mt-2 mb-4" style="overflow-x: auto">
-                <div class="col-md-2"></div>
-                    <div class="row col-md-8 justify-content-center">
-                        <div class="col-md-12 text-center">
-                        <h3>Total Penjualan produk</h3>
+                <div class="col-md-1"></div>
+
+                <div class="row col-md-10">
+                <h3 class="text-center">Total Penjualan produk</h3>
+
                     <canvas id="produkChart" width="200" height="100"></canvas>
                 </div>
-            </div>
-    <div class="col-md-2"></div>
-</div>
+                <div class="col-md-1"></div>
 
+            </div>
 
         </div>
     </div>
@@ -162,7 +162,7 @@
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
-        },
+        }
     });
 </script>
 <script>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 // use Illuminate\Console\View\Components\Alert;
 use App\Http\Requests\StoreprodukRequest;
 use App\Http\Requests\UpdateprodukRequest;
+use App\Models\Kategori;
 use App\Models\ProdukModel;
 // use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
@@ -15,7 +16,10 @@ class ProdukController extends Controller
 {
     public function index(Request $request)
     {
-        $data = ProdukModel::query();
+        $data = ProdukModel::query()
+            ->join('kategori', 'kategori.id', '=', 'produk.kategori_id')
+            ->select('produk.id as produk_id', 'produk.gambar_produk', 'produk.nama_produk', 'produk.harga_produk', 'produk.kategori_id', 'produk.deskripsi_produk', 'produk.merk_produk', 'produk.status_produk', 'produk.stok', 'produk.created_at', 'produk.updated_at', 'kategori.name as kategori_name');
+
 
         if ($request->has('query')) {
             $searchTerm = $request->input('query');
@@ -24,7 +28,9 @@ class ProdukController extends Controller
         }
 
         // $data = $data->get();
-        $data = $data->paginate(3);
+        $data = $data->paginate(10);
+
+        // dd($data);
 
         return view("admin.produk", compact('data'))->with([
             'user' => Auth::user()
@@ -33,14 +39,41 @@ class ProdukController extends Controller
     }
 
 
+    public function generateIdProduk()
+    {
+
+        $lastProduk = ProdukModel::orderBy('id', 'desc')->first();
+
+        if ($lastProduk) {
+            $lastIdProduk = $lastProduk->id;
+
+            // Mengambil bagian angka dari ID produk terakhir
+            $lastIdNumber = intval(substr($lastIdProduk, 2));
+
+            // Menambah 1 pada bagian angka
+            $newIdNumber = $lastIdNumber + 1;
+
+            // Format ID baru dengan padding angka menjadi 3 digit
+            $newIdProduk = "PR" . str_pad($newIdNumber, 3, '0', STR_PAD_LEFT);
+        } else {
+            // Jika belum ada produk, ID pertama adalah "PR001"
+            $newIdProduk = "PR001";
+        }
+
+        return $newIdProduk;
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function addProduk()
     {
+        $kategoris = Kategori::query()->where('status', 1)->get();
+
         return view("admin.modal.addProduk", [
             'title' => 'Tambah  Produk',
-            'id' => 'PR' . rand(100, 999),
+            'id' => $this->generateIdProduk(),
+            'kategoris' => $kategoris
         ]);
     }
 
@@ -59,15 +92,27 @@ class ProdukController extends Controller
         $data->id = $request->id;
         $data->nama_produk = $request->nama_produk;
         $data->harga_produk = $request->harga_produk;
-        $data->kategori_produk = $request->kategori_produk;
+        $data->kategori_id = $request->kategori_produk;
+        $data->stok = $request->stok;
         $data->deskripsi_produk = $request->deskripsi_produk;
         $data->merk_produk = $request->merk_produk;
         $data->status_produk = $request->status_produk;
 
         if ($request->hasFile('gambar_produk')) {
+
             $photo = $request->file('gambar_produk');
             $filename = date('Ymd') . '_' . $photo->getClientOriginalName();
-            $photo->move(public_path('storage/produk'), $filename);
+
+            // Define the absolute path to the desired upload directory
+            $destinationPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/produk';
+
+            // Ensure the destination directory exists
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            // Move the file to the destination directory
+            $photo->move($destinationPath, $filename);
             $data->gambar_produk = $filename;
         }
 
@@ -82,12 +127,14 @@ class ProdukController extends Controller
     public function show($id)
     {
         $data = ProdukModel::findOrFail($id);
+        $kategoris = Kategori::query()->where('status', 1)->get();
 
         return view(
             'admin.modal.EditProduk',
             [
                 'title' => 'Edit Data Produk',
                 'data' => $data,
+                'kategoris' => $kategoris
             ]
         )->render();
     }
@@ -110,7 +157,17 @@ class ProdukController extends Controller
         if ($request->file('gambar_produk')) {
             $photo = $request->file('gambar_produk');
             $filename = date('Ymd') . '_' . $photo->getClientOriginalName();
-            $photo->move(public_path('storage/produk'), $filename);
+
+            // Define the absolute path to the desired upload directory
+            $destinationPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/produk';
+
+            // Ensure the destination directory exists
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            // Move the file to the destination directory
+            $photo->move($destinationPath, $filename);
             $data->gambar_produk = $filename;
         } else {
             $filename = $request->gambar_produk;
@@ -121,7 +178,8 @@ class ProdukController extends Controller
             'gambar_produk' => $filename,
             'nama_produk' => $request->nama_produk,
             'harga_produk' => $request->harga_produk,
-            'kategori_produk' => $request->kategori_produk,
+            'kategori_id' => $request->kategori_produk,
+            'stok' => $request->stok,
             'deskripsi_produk' => $request->deskripsi_produk,
             'merk_produk' => $request->merk_produk,
             'status_produk' => $request->status_produk,
@@ -159,7 +217,7 @@ class ProdukController extends Controller
         if ($category === 'semua') {
             $products = ProdukModel::all();
         } else {
-            $products = ProdukModel::where('kategori_produk', $category)->get();
+            $products = ProdukModel::where('kategori_id', $category)->get();
         }
 
         // Anda dapat mengembalikan view atau menggunakan partials untuk memuat data produk
@@ -169,20 +227,14 @@ class ProdukController extends Controller
 
     public function produkuser(Request $request)
     {
-
-        $products = ProdukModel::all(); // Mengambil semua data produk dari model Product
-
-        return view('user.produk', compact('products'));
+        $products = ProdukModel::all();
+        $kategoris = Kategori::query()->where('status', 1)->get();
+        return view('user.produk', compact('products', 'kategoris'));
     }
 
     public function produkterbaru(Request $request)
     {
-
-        // $products = ProdukModel::all(); // Mengambil semua data produk dari model Product
-
-        // return view('user.produkterbaru', compact('products'));
         $produkNewArrival = ProdukModel::where('status_produk', 'New Arrival')->get();
-
         return view('user.produkterbaru', ['produkNewArrival' => $produkNewArrival]);
     }
 

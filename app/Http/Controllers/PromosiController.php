@@ -18,7 +18,9 @@ class PromosiController extends Controller
      */
     public function index()
     {
-        $data = PromosiModel::all();  // Mengambil semua data dari tabel promosi
+        $data = PromosiModel::query()->with('details')->get();  // Mengambil semua data dari tabel promosi
+
+        // dd($data);
         return view('admin.promosi', compact('data'))->with([
             'user' => Auth::user()
         ]);
@@ -37,7 +39,9 @@ class PromosiController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -54,9 +58,20 @@ class PromosiController extends Controller
         $data->promosi_value = $request->promosi_value;
 
         if ($request->hasFile('gambar_promosi')) {
+
             $photo = $request->file('gambar_promosi');
             $filename = date('Ymd') . '_' . $photo->getClientOriginalName();
-            $photo->move(public_path('storage/promosi'), $filename);
+
+            // Define the absolute path to the desired upload directory
+            $destinationPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/promosi';
+
+            // Ensure the destination directory exists
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            // Move the file to the destination directory
+            $photo->move($destinationPath, $filename);
             $data->gambar_promosi = $filename;
         }
 
@@ -81,11 +96,11 @@ class PromosiController extends Controller
     public function show(string $id)
     {
         $data = PromosiModel::query()
-        ->where('promosi.id', $id)
-        ->first();
+            ->where('promosi.id', $id)
+            ->first();
         $details = DetailPromosiModel::query()
-        ->where('detail_promosi.id_promosi', $id)
-        ->get();
+            ->where('detail_promosi.id_promosi', $id)
+            ->get();
 
         $produks = ProdukModel::all();
 
@@ -116,9 +131,20 @@ class PromosiController extends Controller
         $data = PromosiModel::findOrFail($id);
 
         if ($request->file('gambar_promosi')) {
+            // dd(public_path());
             $photo = $request->file('gambar_promosi');
             $filename = date('Ymd') . '_' . $photo->getClientOriginalName();
-            $photo->move(public_path('storage/promosi'), $filename);
+
+            // Define the absolute path to the desired upload directory
+            $destinationPath = $_SERVER['DOCUMENT_ROOT'] . '/storage/promosi';
+
+            // Ensure the destination directory exists
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            // Move the file to the destination directory
+            $photo->move($destinationPath, $filename);
             $data->gambar_promosi = $filename;
         } else {
             $filename = $request->gambar_promosi;
@@ -132,19 +158,18 @@ class PromosiController extends Controller
         $data->promosi_value = $request->promosi_value;
 
         if ($data->save()) {
-        
+
             foreach ($request->produks as $key => $value) {
                 $produk = ProdukModel::findOrFail($value);
 
                 $already = DetailPromosiModel::where('id_promosi', $data->id)->where('id_produk', $value)->first();
-                if(!$already){
+                if (!$already) {
                     $detail = new DetailPromosiModel();
                     $detail->id_produk = $value;
                     $detail->id_promosi = $data->id;
                     $detail->nama_produk = $produk->nama_produk;
                     $detail->save();
                 }
-                
             }
             return redirect('/promosi');
         }
@@ -165,7 +190,8 @@ class PromosiController extends Controller
         ]);
     }
 
-    public function destroyProduk(Request $request){
+    public function destroyProduk(Request $request)
+    {
         $id = $request->input('id');
         $data = DetailPromosiModel::find($id);
         $data->delete();
@@ -173,5 +199,11 @@ class PromosiController extends Controller
             'status' => 'success',
             'message' => 'Berhasil Menghapus Data',
         ]);
+    }
+    public function showdetailpromosi($id)
+    {
+        $promo = PromosiModel::query()->with(['details', 'details.produk'])->where('id', $id)->first();
+        // dd($promo);
+        return view('user.detailpromosi', compact('promo'));
     }
 }

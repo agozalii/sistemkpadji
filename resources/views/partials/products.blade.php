@@ -3,7 +3,7 @@
     @if ($count % 3 == 0)
         <div class="row mb-3">
     @endif
-    <div class="col-md-4">
+    <div class="col-md-4 mt-4">
         <div class="card">
             <!-- Menampilkan gambar produk -->
             <a href="{{ route('detail.produk', ['id' => $product->id]) }}">

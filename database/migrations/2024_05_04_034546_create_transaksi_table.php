@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transaksi', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->string('nama_pelanggan');
+            $table->string('nama_pelanggan', 200);
             $table->date('tanggal_transaksi');
             $table->enum('metode_pembayaran', ['Cash', 'Qris', 'Dana']);
             $table->string('total_transaksi');

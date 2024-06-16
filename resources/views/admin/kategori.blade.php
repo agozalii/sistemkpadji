@@ -3,7 +3,7 @@
 @include('sweetalert::alert')
 
 @section('judul')
-    <strong>Halaman Produk</strong>
+    <strong>Halaman Kategori</strong>
 @endsection
 
 @section('isi')
@@ -13,17 +13,17 @@
                 <div class="col-md-6">
                     <button style="background-color: #237e79" class="btn btn-success mb-3" id="addData">
                         <i class="fa fa-plus"></i>
-                        <span> Tambah Produk</span>
+                        <span> Tambah Kategori</span>
 
                     </button>
                 </div>
                 <div class="col-md-6">
-                    <form action="/produk" role="search" method="GET" class="form-inline float-right">
-                        <a href="{{ route('produk.index') }}" class="btn ml-2 mr-2">
+                    <form action="/admin/kategori" role="search" method="GET" class="form-inline float-right">
+                        <a href="{{ route('admin.kategori') }}" class="btn ml-2 mr-2">
                             <i class="fas fa-sync-alt"></i> <!-- Ikon refresh -->
                         </a>
-                        <input type="text" name="query" class="form-control mr-2" placeholder="Cari produk..."
-                            style="width: 400px" name="search" value="{{ request('search') }}">
+                        <input type="text" name="query" class="form-control mr-2" placeholder="Cari kategori ..."
+                            style="width: 400px" name="search" value="{{ $search }}">
                         <button type="submit" class="btn btn-primary">Cari</button>
                     </form>
                 </div>
@@ -38,44 +38,33 @@
                 <table class="table table-bordered table-striped" style="min-width: 1500px; overflow-y: auto;">
                     <thead>
                         <tr>
-                            <th width="100px">Id Produk</th>
-                            <th width="200px">Gambar</th>
-                            <th width="250px">Nama</th>
-                            <th width="150px">Harga</th>
-                            <th width="150px">Kategori</th>
-                            <th width="150px">Stok</th>
-                            <th width="550px">Deskripsi</th>
-                            <th width="150px">Merk</th>
-                            <th width="150px">Status</th>
+                            <th width="50px" scope="col">No</th>
+                            <th width="200px">Nama Kategori</th>
+                            <th width="250px">Status</th>
                             <th width="150px">Aksi</th>
 
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                        @endphp
                         @foreach ($data as $y => $x)
                             <tr>
-                                <td>{{ $x->produk_id }}</td>
-                                <td><img src="{{ asset('storage/produk/' . $x->gambar_produk) }}" alt="Gambar Produk"
-                                        width="100"></td>
-                                <td>{{ $x->nama_produk }}</td>
-                                <td>{{ $x->harga_produk }}</td>
-                                <td>{{ $x->kategori_name }}</td>
-                                <td>{{ $x->stok }}</td>
-                                <td>{{ $x->deskripsi_produk }}</td>
-                                <td>{{ $x->merk_produk }}</td>
+                                <th scope="row">{{ $data->firstItem() + $loop->index }}</th>
+                                <td>{{ $x->name }}</td>
                                 <td>
-                                    @if ($x->status_produk === 'new arrival')
-                                        <span class="badge badge-success">New Arrival</span>
+                                    @if ($x->status == 1)
+                                        <span class="badge badge-success">Aktif</span>
                                     @else
-                                        <span class="badge badge-primary">Lama</span>
+                                        <span class="badge badge-danger">Tidak Aktif</span>
                                     @endif
                                 </td>
                                 <td>
 
-                                    <button class="btn btn-info editProduk" data-id="{{ $x->produk_id }}">
+                                    <button class="btn btn-info editKategori" data-id="{{ $x->id }}">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-danger deleteProduk" data-id="{{ $x->produk_id }}">
+                                    <button class="btn btn-danger deleteKategori" data-id="{{ $x->id }}">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
@@ -116,24 +105,24 @@
             $('#addData').click(function(e) {
                 e.preventDefault();
                 $.ajax({
-                    url: '{{ route('addProduk') }}',
+                    url: '{{ route('addKategori') }}',
                     success: function(response) {
                         $('.tampilData').html(response).show();
-                        $('#addProduk').modal("show");
+                        $('#addKategori').modal("show");
                     }
                 });
             });
 
-            $('.editProduk').click(function(e) {
+            $('.editKategori').click(function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
 
                 $.ajax({
                     type: "GET",
-                    url: "{{ route('editProduk', ['id' => ':id']) }}".replace(':id', id),
+                    url: "{{ route('editKategori', ['id' => ':id']) }}".replace(':id', id),
                     success: function(response) {
                         $('.tampilEditData').html(response).show();
-                        $('#editProduk').modal("show");
+                        $('#editKategori').modal("show");
                     }
                 });
             });
@@ -143,7 +132,7 @@
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
                 },
             });
-            $('.deleteProduk').click(function(e) {
+            $('.deleteKategori').click(function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
                 const Toast = Swal.mixin({
@@ -173,7 +162,7 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type: "GET",
-                            url: "{{ route('deleteProduk', ['id' => ':id']) }}".replace(':id', id),
+                            url: "{{ route('deleteKategori', ['id' => ':id']) }}".replace(':id', id),
                             dataType: "json",
                             success: function(response) {
                                 // ini diambil dari controller

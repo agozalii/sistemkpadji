@@ -4,6 +4,7 @@ use App\Http\Controllers\BerandaUserController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\Homeadmin;
 use App\Http\Controllers\Homemanajer;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\KritikSaranController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LayoutController;
@@ -38,7 +39,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('login', [LoginController::class, 'index'])->name('login');
 
-Route::get('/', [LayoutController::class, 'index'])->middleware('auth');
+// Route::get('/', [LayoutController::class, 'index']);
 Route::get('/home', [LayoutController::class, 'index'])->middleware('auth');
 
 // Route::get('/', function () {
@@ -57,7 +58,7 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('logout', 'logout');
 });
 
-Route::get('/user/beranda', [BerandaUserController::class, 'index'])->name('index');
+Route::get('/', [BerandaUserController::class, 'index'])->name('index');
 Route::get('/get-products', [ProdukController::class, 'getProductsByCategory']);
 Route::get('/user/produkuser', [ProdukController::class, 'produkuser'])->name('produkuser');
 Route::get('/user/produkterbaru', [ProdukController::class, 'produkterbaru'])->name('produkterbaru');
@@ -72,9 +73,12 @@ Route::POST('/simpan-kritik-saran', [KritikSaranController::class, 'store'])->na
 Route::get('/produk/{id}', [ProdukController::class, 'detailProduk'])->name('detail.produk');
 
 Route::get('/user/tentangkami', [BerandaUserController::class, 'tentangkami'])->name('tentangkami');
+Route::get('/user/vip', [BerandaUserController::class, 'vip'])->name('vip');
 Route::get('/user/promo', [BerandaUserController::class, 'promo'])->name('promo');
 Route::get('/user/galeri', [GaleriController::class, 'index'])->name('galeri');
 Route::get('/galeri/modal/{id}', [GaleriController::class, 'showModal'])->name('showVideoModal');
+Route::get('/promosi/{id}', [PromosiController::class, 'showdetailpromosi'])->name('promosi.showdetailpromosi');
+
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -84,7 +88,21 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('video', VideoController::class);
         Route::resource('transaksi', TransaksiController::class);
         Route::resource('kritiksaran', KritikSaranController::class);
-        Route::resource('laporan', LaporanController::class);
+
+        Route::get('/admin/deleteKritiksaran/{id}', [KritikSaranController::class, 'destroy'])->name('deleteKritiksaran');
+        Route::get('/admin/kritiksaran', [KritikSaranController::class, 'tampil'])->name('tampilKritiksaran');
+
+
+        // Route::resource('laporan', LaporanController::class);
+        Route::get('/laporan', [LaporanController::class, 'adminIndex'])->name('laporan.penjualan.admin');
+
+        // CRUD kategori
+        Route::get('/admin/kategori', [KategoriController::class, 'index'])->name('admin.kategori');
+        Route::get('/admin/addKategori', [KategoriController::class, 'addKategori'])->name('addKategori');
+        Route::POST('/admin/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
+        Route::get('/admin/editKategori/{id}', [KategoriController::class, 'show'])->name('editKategori');
+        Route::PUT('/admin/updateKategori/{id}', [KategoriController::class, 'update'])->name('updateKategori');
+        Route::get('/admin/deleteKategori/{id}', [KategoriController::class, 'destroy'])->name('deleteKategori');
 
 
         // CRUD produk
@@ -121,11 +139,17 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['middleware' => ['cekUserLogin:manajer']], function () {
         // Route::resource('pegawai',LoginController::class);
-        Route::get('pegawai', [LoginController::class, 'tampil']);
+        Route::get('/manajer/pegawai', [PegawaiController::class, 'index'])->name('pegawai');
+
+        Route::get('/manajer/addPegawai', [PegawaiController::class, 'addPegawai'])->name('addPegawai');
+        Route::POST('/manajer/addDataPegawai', [PegawaiController::class, 'store'])->name('addDataPegawai');
+        Route::get('/manajer/editPegawai/{id}', [PegawaiController::class, 'show'])->name('editPegawai');
+        Route::PUT('/manajer/updatePegawai/{id}', [PegawaiController::class, 'update'])->name('updatePegawai');
+        Route::get('/manajer/deletePegawai/{id}', [PegawaiController::class, 'destroy'])->name('deletePegawai');
         // Route::resource('laporan', LaporanController::class);
         Route::get('/manajer/laporanPenjualan', [LaporanController::class, 'index'])->name('laporan.penjualan');
         Route::get('/manajer/laporanPromosi', [LaporanController::class, 'promosi'])->name('laporan.promosi');
-        Route::resource('kritiksaran', KritikSaranController::class);
+        Route::get('/manajer/kritiksaran', [KritikSaranController::class, 'tampilmanajer'])->name('tampilKritiksaran');
 
         // // CRUD PEGAWAI
         // Route::get('/manajer/addPegawai', [LoginController::class, 'addPegawai']) -> name('addPegawai');

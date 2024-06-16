@@ -34,7 +34,8 @@ class PromosiModel extends Model
         return $this->hasMany(DetailTransaksiModels::class, 'promosi_id', 'id');
     }
 
-    public function details(){
-        return $this->hasMany(DetailPromosiModel::class, 'id_promosi', 'id_produk');
+    public function details()
+    {
+        return $this->hasMany(DetailPromosiModel::class, 'id_promosi', 'id');
     }
 }

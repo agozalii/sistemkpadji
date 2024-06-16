@@ -1,6 +1,6 @@
 <li class="nav-item">
     <a href="{{ url('home') }}" class="nav-link">
-        <i class="nav-icon far fa-image ml-2"></i>
+        <i class="nav-icon fa-solid fa-house ml-2"></i>
         <p style="color: white">
             Beranda
         </p>
@@ -11,8 +11,16 @@
 @if ($user->role == 'admin')
     <li class="nav-header"><strong style="color: white">DATA MASTER</strong></li>
     <li class="nav-item">
+        <a href="{{ url('admin/kategori') }}" class="nav-link">
+            <i class="nav-icon fa-solid fa-list ml-2"></i>
+            <p style="color: white">
+                Kategori
+            </p>
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="{{ url('produk') }}" class="nav-link">
-            <i class="nav-icon fa-solid fa-house ml-2"></i>
+            <i class="nav-icon fa-solid fa-box ml-2"></i>
             <p style="color: white">
                 Produk
             </p>
@@ -44,7 +52,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ url('kritiksaran') }}" class="nav-link">
+        <a href="{{ url('admin/kritiksaran') }}" class="nav-link">
             <i class="nav-icon fa-solid fa-comment ml-2"></i>
             <p style="color: white">
                 Kritik & Saran
@@ -63,7 +71,7 @@
 @elseif ($user->role == 'manajer')
     <li class="nav-header" style="color: white">LAPORAN</li>
     <li class="nav-item">
-        <a href="{{ url('pegawai') }}" class="nav-link">
+        <a href="{{ url('/manajer/pegawai') }}" class="nav-link">
             <i class="nav-icon fa-solid fa-user ml-2"></i>
             <p style="color: white">
                 Data Pegawai
@@ -94,7 +102,7 @@
         </ul>
     </li>
     <li class="nav-item">
-        <a href="{{ url('kritiksaran') }}" class="nav-link">
+        <a href="{{ url('/manajer/kritiksaran') }}" class="nav-link">
             <i class="nav-icon fa-solid fa-comment ml-2"></i>
             <p style="color: white">
                 Kritik & Saran

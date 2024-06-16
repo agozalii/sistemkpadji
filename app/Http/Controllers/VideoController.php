@@ -52,17 +52,39 @@ class VideoController extends Controller
         $data->user_id = Auth::id();
 
         if ($request->hasFile('tumbnail')) {
+            
             $photo = $request->file('tumbnail');
-            $filename = date('Ymd') . '_' . $photo->getClientOriginalName();
-            $photo->move(public_path('storage/tumbnail'), $filename);
-            $data->tumbnail = $filename;
+                $filename = date('Ymd') . '_' . $photo->getClientOriginalName();
+                
+                // Define the absolute path to the desired upload directory
+                $destinationPath = $_SERVER['DOCUMENT_ROOT'].'/storage/tumbnail';
+                
+                // Ensure the destination directory exists
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                
+                // Move the file to the destination directory
+                $photo->move($destinationPath, $filename);
+                $data->tumbnail = $filename;
         }
 
         if ($request->hasFile('video')) {
-            $video = $request->file('video');
-            $filename = date('Ymd') . '_' . $video->getClientOriginalName();
-            $video->move(public_path('storage/videos'), $filename);
-            $data->video = $filename;
+            
+             $video = $request->file('video');
+                $filename = date('Ymd') . '_' . $video->getClientOriginalName();
+                
+                // Define the absolute path to the desired upload directory
+                $destinationPath = $_SERVER['DOCUMENT_ROOT'].'/storage/videos';
+                
+                // Ensure the destination directory exists
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                
+                // Move the file to the destination directory
+                $video->move($destinationPath, $filename);
+                $data->video = $filename;
         }
 
 
@@ -102,10 +124,21 @@ class VideoController extends Controller
         $data = VideoModel::findOrFail($id);
 
         if ($request->hasFile('video')) {
+            
             $video = $request->file('video');
-            $filename = date('Ymd') . '_' . $video->getClientOriginalName();
-            $video->move(public_path('storage/videos'), $filename);
-            $data->video = $filename;
+                $filename = date('Ymd') . '_' . $video->getClientOriginalName();
+                
+                // Define the absolute path to the desired upload directory
+                $destinationPath = $_SERVER['DOCUMENT_ROOT'].'/storage/videos';
+                
+                // Ensure the destination directory exists
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0777, true);
+                }
+                
+                // Move the file to the destination directory
+                $video->move($destinationPath, $filename);
+                $data->video = $filename;
         } else {
             $filename = $request->video;
         }

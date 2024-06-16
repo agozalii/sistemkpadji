@@ -15,7 +15,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
-                        <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi" value="{{ date('Y-m-d') }}">
+                        <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi"
+                            value="{{ date('Y-m-d') }}">
                     </div>
                     <div class="mb-3">
                         <label for="metode_pembayaran" class="form-label">Metode Pembayaran</label>
@@ -52,7 +53,7 @@
                 <select class="form-select" id="produk_id_${produkCount}" name="produk_id[]" onchange="addPromosi(${produkCount})">
                     <option value="">Pilih Produk</option>
                     @foreach ($produks as $row)
-                        <option value="{{ $row->id }}">{{ $row->id }} - {{ $row->nama_produk }}</option>
+                        <option value="{{ $row->id }}">{{ $row->id }} - {{ $row->nama_produk }} - {{ $row->stok }}</option>
                     @endforeach
                 </select>
             </div>
@@ -75,7 +76,7 @@
 
     function addPromosi(produkCount) {
 
-        const produkId = document.getElementById(`produk_id_`+produkCount).value;
+        const produkId = document.getElementById(`produk_id_` + produkCount).value;
 
         $.ajax({
             url: "{{ route('getProdukPromosi') }}",
@@ -85,13 +86,13 @@
                 produkId: produkId
             },
             success: function(response) {
-                const promosiId = document.getElementById(`promosi_id_`+produkCount);
-                if(response.status == 'success') {
+                const promosiId = document.getElementById(`promosi_id_` + produkCount);
+                if (response.status == 'success') {
                     promosiId.value = response.data;
-                }else{
+                } else {
                     promosiId.value = '';
                 }
-                
+
             },
             error: function(xhr, status, error) {
                 console.log(error);

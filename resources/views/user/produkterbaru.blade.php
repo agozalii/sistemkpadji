@@ -39,9 +39,10 @@
                     </div>
                 </div>
             </div> --}}
-            <div class="container" style="margin-top: 150px">
+            <div class="container" style="margin-top: 75px">
+                <h1 class="text-center" style="border-bottom: 4px solid #148E8E; padding-bottom: 8px;">Produk Terbaru</h1>
                 <div class="row">
-                    <div class="col-md-3 mb-4">
+                    <div class="col-md-3 mb-4 mt-4">
                         <!-- Profile Button with User Icon -->
                         <a id="btn-terbaru" href="#" class="btn btn-block category-btn" data-category="terbaru"
                             style="background-color: #d1d8e0; border-color: #e9ecef; color: #343a40;
@@ -50,7 +51,7 @@
                         </a>
                     </div>
 
-                    <div class="col-md-9">
+                    <div class="col-md-9 mt-4">
                         <div class="row">
                             @foreach ($produkNewArrival as $produk)
                             <div class="col-md-4 mb-4">

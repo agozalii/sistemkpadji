@@ -53,7 +53,7 @@
                                                 </div>
                                                 <button style="background-color: #237e79"
                                                     class="btn btn-success mb-3 submitKritikSaran" type="submit">
-                                                    <span> Tambah Produk</span>
+                                                    <span>Kirim</span>
                                                 </button>
                                             </form>
                                         </div>
@@ -68,7 +68,7 @@
                                             </div>
                                             <div class="section">
                                                 <p class="heading"><i class="fas fa-envelope"></i> Email</p>
-                                                <!-- Masukkan alamat email yang sesuai di sini -->
+                                                <p class="text">foresterjakal@gmail.com</p>
                                             </div>
                                             <div class="section">
                                                 <p class="heading"><i class="fas fa-phone-square"></i> No. Telepon</p>

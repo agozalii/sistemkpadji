@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('video', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->string('user_id');
-            $table->string('kategori');
-            $table->string('tumbnail');
-            $table->string('video');
-            $table->string('judul_video');
-            $table->string('deskripsi_video');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('kategori', 200);
+            $table->string('tumbnail', 200);
+            $table->text('video');
+            $table->string('judul_video', 200);
+            $table->text('deskripsi_video');
             $table->timestamps();
         });
     }

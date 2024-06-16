@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('/') }}plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('/') }}dist/css/adminlte.min.css">
+
 </head>
 
 <body class="hold-transition login-page">
@@ -22,7 +23,10 @@
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <h1><strong>Login</strong></h1>
+                <a class="navbar-brand" href="#">
+                    <img style="height: 32px; display: inline-block; vertical-align: middle; margin-top:7px; margin-left:-7px;" src="{{url('storage/img/consina.png')}}" alt="logo" />
+                    <img style="height: 32px; display: inline-block; vertical-align: middle;" src="{{url('storage/img/forester.jpg')}}" alt="logo" />
+                </a>
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>

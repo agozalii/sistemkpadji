@@ -41,15 +41,15 @@
             <table class="table table-bordered table-striped" style="min-width: 1500px; overflow-y: auto;">
                 <thead>
                     <tr>
-                        <th width="50px" scope="col">No</th>
-                        <th width="100px">Id</th>
-                        <th width="200px">Gambar</th>
-                        <th width="250px">Nama</th>
-                        <th width="150px">Deskripsi</th>
-                        <th width="150px">Tanggal Mulai</th>
-                        <th width="150px">Tanggal Selesai</th>
-                        <th width="150px">Promo Value</th>
-                        <th width="150px">Aksi</th>
+                        <th scope="col">No</th>
+                        <th>Id</th>
+                        <th>Gambar</th>
+                        <th>Nama</th>
+                        <th>Deskripsi</th>
+                        <th>Tanggal Mulai</th>
+                        <th>Tanggal Selesai</th>
+                        <th>Promo Value</th>
+                        <th>Aksi</th>
 
                     </tr>
                 </thead>

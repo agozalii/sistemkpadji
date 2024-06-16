@@ -73,64 +73,72 @@
                             <div class="tab-pane fade {{ $kategori == 'tutorial' ? 'show active' : '' }}"
                                 id="custom-tabs-three-tutorial" role="tabpanel"
                                 aria-labelledby="custom-tabs-three-tutorial-tab">
-                                @foreach ($tutorials as $video)
-                                    <div class="col-md-6" style="margin-top:50px;">
-                                        <a href="#" class="video-link"
-                                            data-video="{{ asset('storage/videos/' . $video->video) }}">
-                                            <div class="thumbnail-container">
-                                                <div class="thumbnail-wrapper">
-                                                    <img src="{{ asset('storage/tumbnail/' . $video->tumbnail) }}"
-                                                        alt="Thumbnail" class="thumbnail-img" style="width: 90%">
-                                                    <img src="{{ asset('storage/img/play.png') }}" alt="Play"
-                                                        class="play-icon">
+                                <div class="row">
+                                    @foreach ($tutorials as $video)
+                                        <div class="col-md-6" style="margin-top:50px;">
+                                            <a href="#" class="video-link"
+                                                data-video="{{ asset('storage/videos/' . $video->video) }}">
+                                                <div class="thumbnail-container">
+                                                    <div class="thumbnail-wrapper">
+                                                        <img src="{{ asset('storage/tumbnail/' . $video->tumbnail) }}"
+                                                            alt="Thumbnail" class="thumbnail-img" style="width: 90%">
+                                                        <img src="{{ asset('storage/img/play.png') }}" alt="Play"
+                                                            class="play-icon">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                        <p style="margin-top: 8px; font-weight: bold; font-size: 25px; color: #148E8E;">
-                                            {{ $video->judul_video }}</p>
-                                    </div>
-                                @endforeach
+                                            </a>
+                                            <p style="margin-top: 8px; font-weight: bold; font-size: 25px; color: #148E8E;">
+                                                {{ $video->judul_video }}</p>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                             <div class="tab-pane fade {{ $kategori == 'tips' ? 'show active' : '' }}"
                                 id="custom-tabs-three-tips" role="tabpanel" aria-labelledby="custom-tabs-three-tips-tab">
-                                @foreach ($tips as $video)
-                                    <div class="col-md-6" style="margin-top:50px;">
-                                        <a href="#" class="video-link"
-                                            data-video="{{ asset('storage/videos/' . $video->video) }}">
-                                            <div class="thumbnail-container">
-                                                <div class="thumbnail-wrapper">
-                                                    <img src="{{ asset('storage/tumbnail/' . $video->tumbnail) }}"
-                                                        alt="Thumbnail" class="thumbnail-img" style="width: 90%">
-                                                    <img src="{{ asset('storage/img/play.png') }}" alt="Play"
-                                                        class="play-icon">
+                                <div class="row">
+                                    @foreach ($tips as $video)
+                                        <div class="col-md-6" style="margin-top:50px;">
+                                            <a href="#" class="video-link"
+                                                data-video="{{ asset('storage/videos/' . $video->video) }}">
+                                                <div class="thumbnail-container">
+                                                    <div class="thumbnail-wrapper">
+                                                        <img src="{{ asset('storage/tumbnail/' . $video->tumbnail) }}"
+                                                            alt="Thumbnail" class="thumbnail-img" style="width: 90%">
+                                                        <img src="{{ asset('storage/img/play.png') }}" alt="Play"
+                                                            class="play-icon">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                        <p style="margin-top: 8px; font-weight: bold; font-size: 25px; color: #148E8E;">
-                                            {{ $video->judul_video }}</p>
-                                    </div>
-                                @endforeach
+                                            </a>
+                                            <p
+                                                style="margin-top: 8px; font-weight: bold; font-size: 25px; color: #148E8E;">
+                                                {{ $video->judul_video }}</p>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                             <div class="tab-pane fade {{ $kategori == 'petualangan' ? 'show active' : '' }}"
                                 id="custom-tabs-three-petualangan" role="tabpanel"
                                 aria-labelledby="custom-tabs-three-petualangan-tab">
-                                @foreach ($petualangans as $video)
-                                    <div class="col-md-6" style="margin-top:50px;">
-                                        <a href="#" class="video-link"
-                                            data-video="{{ asset('storage/videos/' . $video->video) }}">
-                                            <div class="thumbnail-container">
-                                                <div class="thumbnail-wrapper">
-                                                    <img src="{{ asset('storage/tumbnail/' . $video->tumbnail) }}"
-                                                        alt="Thumbnail" class="thumbnail-img" style="width: 90%">
-                                                    <img src="{{ asset('storage/img/play.png') }}" alt="Play"
-                                                        class="play-icon">
+                                <div class="row">
+                                    @foreach ($petualangans as $video)
+                                        <div class="col-md-6" style="margin-top:50px;">
+                                            <a href="#" class="video-link"
+                                                data-video="{{ asset('storage/videos/' . $video->video) }}">
+                                                <div class="thumbnail-container">
+                                                    <div class="thumbnail-wrapper">
+                                                        <img src="{{ asset('storage/tumbnail/' . $video->tumbnail) }}"
+                                                            alt="Thumbnail" class="thumbnail-img" style="width: 90%">
+                                                        <img src="{{ asset('storage/img/play.png') }}" alt="Play"
+                                                            class="play-icon">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                        <p style="margin-top: 8px; font-weight: bold; font-size: 25px; color: #148E8E;">
-                                            {{ $video->judul_video }}</p>
-                                    </div>
-                                @endforeach
+                                            </a>
+                                            <p
+                                                style="margin-top: 8px; font-weight: bold; font-size: 25px; color: #148E8E;">
+                                                {{ $video->judul_video }}</p>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>

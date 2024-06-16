@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('detail_promosi', function (Blueprint $table) {
             $table->id();
-            $table->string('id_promosi');
-            $table->string('id_produk');
-            $table->string('nama_produk');
+            $table->string('id_promosi', 10);
+            $table->string('id_produk', 10);
+            $table->string('nama_produk', 200);
             $table->timestamps();
         });
     }
